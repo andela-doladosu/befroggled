@@ -1,3 +1,4 @@
+var gameStarted = false;
 // Enemies our player must avoid
 
 var Enemy = function(x,y,speed) {
@@ -52,46 +53,31 @@ function Player(){
   this.y = y;
 
  
-  var faces = [
+  this.faces = [
         'images/char-boy.png',
         'images/char-princess-girl.png',
         'images/char-pink-girl.png',
         'images/char-horn-girl.png',
         'images/char-cat-girl.png'
         ];
-  this.sprite = faces[0];
+  this.lastFace = 0;
+  this.sprite = this.faces[0];
 }
 
 Player.prototype.change = function(k){
+  if(k == 'enter'){
+    startGame();
+    gameStarted = true;
+  }else{
+    if(this.lastFace == 4){
+    this.lastFace = 0;
+    }else{
+      this.lastFace += 1;
+    }
+    this.sprite = this.faces[this.lastFace];
 
-  switch (k){
-    case 'up':
-      move = posY - ySteps;
-      if(move == -10){
-      }else{
-        this.y = move ;
-        console.log('up');
-      }
-      break;
-    case 'down':
-      move = posY + ySteps;
-      if(move <= 390){
-        this.y = move ;
-      }
-      break;
-    case 'left':
-      move = posX - xSteps;
-      if(move >= 0){
-        this.x = move ;
-      }
-      break;
-    case 'right':
-      move = posX + xSteps;
-      if(move <= 700){
-        this.x = move ;
-      }
-      break;
   }
+  
 }
 
 
@@ -116,7 +102,6 @@ Player.prototype.handleInput = function(k){
       if(move == -10){
       }else{
         this.y = move ;
-        console.log(up);
       }
       break;
     case 'down':
@@ -142,10 +127,15 @@ Player.prototype.handleInput = function(k){
 
 var allEnemies = [];
 
-allEnemies.push(new Enemy(110,70,6));
-allEnemies.push(new Enemy(180,150,2));
-allEnemies.push(new Enemy(330,230,8));
-allEnemies.push(new Enemy(100,310,4));
+
+var startGame = function(){
+  allEnemies.push(new Enemy(110,70,6));
+  allEnemies.push(new Enemy(180,150,2));
+  allEnemies.push(new Enemy(330,230,8));
+  allEnemies.push(new Enemy(100,310,4));
+}
+
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -166,10 +156,12 @@ document.addEventListener('keydown', function(e) {
     40: 'down',
     13: 'enter'
   };
- // if (start)
-        player.handleInput(allowedKeys[e.keyCode]);
-   // else
-     //   loading(allowedKeys[e.keyCode]);    
+
+  if(gameStarted){
+    player.handleInput(allowedKeys[e.keyCode]);
+  }else{
+    player.change(allowedKeys[e.keyCode]);
+  }    
 });
 
 function Gem(){
@@ -196,8 +188,7 @@ Gem.prototype.update = function() {
       var randY = yPoints[Math.floor(Math.random() * yPoints.length)];
       var randX = xPoints[Math.floor(Math.random() * xPoints.length)];
       this.y = randY;
-      this.x = randX;   
-     // console.log('x: '+ randX, 'y: '+ randY);  
+      this.x = randX;    
     }
   }
 };
