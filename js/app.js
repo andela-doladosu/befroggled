@@ -1,4 +1,26 @@
 var gameStarted = false;
+var lives = 0;
+var score = 0;
+var scoreSpan = document.getElementById('score');
+var lifeSpan = document.getElementById('life');
+var statsDiv = document.getElementById('stats');
+function updateScore(){
+  score += 10;
+  scoreSpan.innerHTML = score;
+}
+
+function updateLife(){
+  
+  lives -= 1;
+  lifeSpan.innerHTML = lives;
+}
+function stopGame(){
+  allEnemies = [];
+  player = {};
+  gem.x = 900;
+  statsDiv.innerHTML = 'GAME OVER!';
+}
+
 // Enemies our player must avoid
 
 var Enemy = function(x,y,speed) {
@@ -19,6 +41,7 @@ Enemy.prototype.update = function(dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
+  
   var oldX = this.x ;
   var random = dt * 10 + this.speed ;
   if(oldX >= 700){
@@ -28,11 +51,17 @@ Enemy.prototype.update = function(dt) {
 
   }
 
-  //kill player if he touches any bug
+  //bug collision
+
   if(player.x >= this.x - 30 && player.x <= this.x + 30){
     if(player.y >= this.y - 30 && player.y <= this.y + 30){
       //player loses a life
-      console.log(this.x);
+      updateLife();
+      if(lives == -1){
+        gameStopped = true;
+        stopGame();
+      }
+      //reset player position
       player.y = 390;
       player.x = 700;
     }
@@ -40,9 +69,11 @@ Enemy.prototype.update = function(dt) {
 };
 
 // Draw the enemy on the screen, required method for game
+
 Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -67,7 +98,7 @@ function Player(){
 Player.prototype.change = function(k){
   if(k == 'enter'){
     startGame();
-    gameStarted = true;
+
   }else{
     if(this.lastFace == 4){
     this.lastFace = 0;
@@ -129,6 +160,8 @@ var allEnemies = [];
 
 
 var startGame = function(){
+  lives = 5;
+  gameStarted = true;
   allEnemies.push(new Enemy(110,70,6));
   allEnemies.push(new Enemy(180,150,2));
   allEnemies.push(new Enemy(330,230,8));
@@ -136,7 +169,7 @@ var startGame = function(){
 }
 
 
-
+gem = new Gem();
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -165,10 +198,9 @@ document.addEventListener('keydown', function(e) {
 });
 
 function Gem(){
-  var x = 400;
-  var y = 390;
-  this.x = x ;
-  this.y = y ;
+
+  this.x = 400 ;
+  this.y = 390 ;
 
   this.sprite = 'images/Gem-Blue.png' ;
 }
@@ -178,19 +210,29 @@ Gem.prototype.render = function(){
 };
 
 Gem.prototype.update = function() {
-  var oldX = this.x;
-  var oldY = this.y;
-  //change gem position if player touches it
+  
+
+  //gem collection
+
   if(player.x >= this.x - 30 && player.x <= this.x + 30){
     if(player.y >= this.y - 30 && player.y <= this.y + 30){
+      
+      //increase score
+      updateScore();
+
       var yPoints = [70,150,230,310,390];
       var xPoints = [0,101,202,303,404,505,606,707];
+
       var randY = yPoints[Math.floor(Math.random() * yPoints.length)];
       var randX = xPoints[Math.floor(Math.random() * xPoints.length)];
+
+      //change gem position 
       this.y = randY;
       this.x = randX;    
     }
   }
 };
 
-var gem = new Gem();
+
+
+
