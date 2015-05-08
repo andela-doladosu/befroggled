@@ -88,6 +88,7 @@ Enemy.prototype.update = function(dt) {
   if(player.x >= this.x - 30 && player.x <= this.x + 30){
     if(player.y >= this.y - 30 && player.y <= this.y + 30){
       //player loses a life
+      deadSound.currentTime = 0;
       deadSound.play();
       updateLife();
       if(lives == -1){
@@ -131,9 +132,11 @@ function Player(){
 
 Player.prototype.change = function(k){
   if(k == 'enter'){
+
     startGame();
 
   }else{
+    moveSound.currentTime = 0;
     moveSound.play();
     if(this.lastFace == 4){
     this.lastFace = 0;
@@ -244,6 +247,7 @@ Gem.prototype.update = function() {
     if(player.y >= this.y - 30 && player.y <= this.y + 30){
       
       //increase score
+      gemSound.currentTime = 0;
       gemSound.play();
       updateScore();
 
