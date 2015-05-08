@@ -10,7 +10,10 @@ var statsDiv = document.getElementById('stats');
 var gameOverP = document.createElement('p');
 var hintsDiv = document.getElementById('hints');
 soundDir = 'sounds/';
-
+var moveSound = new Audio(soundDir+'move.wav');
+var gemSound = new Audio(soundDir+'gemUp.wav');
+var deadSound = new Audio(soundDir+'dead.wav');
+var gameOverSound = new Audio(soundDir+'gameOver.wav');
 function updateScore(){
   score += 10;
   updateLevel();
@@ -88,6 +91,7 @@ Enemy.prototype.update = function(dt) {
       updateLife();
       if(lives == -1){
         gameStopped = true;
+        gameOverSound.play();
         stopGame();
       }
       //reset player position
@@ -129,6 +133,7 @@ Player.prototype.change = function(k){
     startGame();
 
   }else{
+    moveSound.play();
     if(this.lastFace == 4){
     this.lastFace = 0;
     }else{
@@ -155,13 +160,14 @@ Player.prototype.handleInput = function(k){
   var ySteps = 80;
   var xSteps = 100;
 
-    
+  moveSound.play();
   switch (k){
     case 'up':
       move = posY - ySteps;
       if(move == -10){
       }else{
         this.y = move ;
+
       }
       break;
     case 'down':
