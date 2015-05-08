@@ -41,6 +41,7 @@ function stopGame(){
 
 var startGame = function(){
   hintsDiv.style.display = 'none';
+  statsDiv.style.display = 'block';
   lives = 5;
   gameStarted = true;
   allEnemies.push(new Enemy(110,70,3));
