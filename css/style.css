@@ -1,9 +1,28 @@
 body {
     text-align: center;
 }
-div{
+#stats{
   color:green;
   font-size: 30px;
   font-weight: bolder;
   border: 1px solid green;
 }
+#hints{
+  color:red;
+  padding: 5px;
+  min-height: 500px;
+  width: 400px;
+  position: fixed;
+  left: 400px;
+  top:100px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 15px;
+  box-shadow: 0 0 8px black;
+  background: #eee;
+}
+#instructions{
+  font-size: 30px;
+  text-decoration: underline;;
+}
+

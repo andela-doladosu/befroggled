@@ -1,24 +1,46 @@
 var gameStarted = false;
 var lives = 0;
 var score = 0;
+var level = 1;
+var allEnemies = [];
 var scoreSpan = document.getElementById('score');
 var lifeSpan = document.getElementById('life');
 var statsDiv = document.getElementById('stats');
+var gameOverP = document.createElement('p');
+var hintsDiv = document.getElementById('hints');
+
 function updateScore(){
   score += 10;
+  if(score % 40 == 0){
+    level += 1;
+  }
   scoreSpan.innerHTML = score;
 }
-
 function updateLife(){
-  
   lives -= 1;
   lifeSpan.innerHTML = lives;
 }
 function stopGame(){
   allEnemies = [];
-  player = {};
   gem.x = 900;
-  statsDiv.innerHTML = 'GAME OVER!';
+  player.sprite = '';
+  statsDiv.style.color = 'red';
+  document.removeEventListener('keydown',function(e){
+  });
+  gameOverP.innerHTML = 'GAME OVER!<br/>Score: '+score+'<br/><a href="">Try again</a>';
+  statsDiv.innerHTML = gameOverP.innerHTML;
+}
+
+
+
+var startGame = function(){
+  hintsDiv.style.display = 'none';
+  lives = 5;
+  gameStarted = true;
+  allEnemies.push(new Enemy(110,70,3));
+  allEnemies.push(new Enemy(180,150,1));
+  allEnemies.push(new Enemy(330,230,4));
+  allEnemies.push(new Enemy(100,310,2));
 }
 
 // Enemies our player must avoid
@@ -43,7 +65,7 @@ Enemy.prototype.update = function(dt) {
   // all computers.
   
   var oldX = this.x ;
-  var random = dt * 10 + this.speed ;
+  var random = dt * 10 + this.speed * level ;
   if(oldX >= 700){
     this.x = 0 ;
   }else{
@@ -156,17 +178,7 @@ Player.prototype.handleInput = function(k){
   }
 }
 
-var allEnemies = [];
 
-
-var startGame = function(){
-  lives = 5;
-  gameStarted = true;
-  allEnemies.push(new Enemy(110,70,6));
-  allEnemies.push(new Enemy(180,150,2));
-  allEnemies.push(new Enemy(330,230,8));
-  allEnemies.push(new Enemy(100,310,4));
-}
 
 
 gem = new Gem();
