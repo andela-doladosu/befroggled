@@ -88,6 +88,7 @@ Enemy.prototype.update = function(dt) {
   if(player.x >= this.x - 30 && player.x <= this.x + 30){
     if(player.y >= this.y - 30 && player.y <= this.y + 30){
       //player loses a life
+      deadSound.play();
       updateLife();
       if(lives == -1){
         gameStopped = true;
@@ -243,6 +244,7 @@ Gem.prototype.update = function() {
     if(player.y >= this.y - 30 && player.y <= this.y + 30){
       
       //increase score
+      gemSound.play();
       updateScore();
 
       var yPoints = [70,150,230,310,390];
