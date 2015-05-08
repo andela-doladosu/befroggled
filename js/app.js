@@ -5,6 +5,7 @@ var level = 1;
 var allEnemies = [];
 var scoreSpan = document.getElementById('score');
 var lifeSpan = document.getElementById('life');
+var levelSpan = document.getElementById('level');
 var statsDiv = document.getElementById('stats');
 var gameOverP = document.createElement('p');
 var hintsDiv = document.getElementById('hints');
@@ -19,6 +20,7 @@ function updateLevel(){
   if(score % 40 == 0){
     level += .5;
   }
+  levelSpan.innerHTML = Math.round(level);
 }
 function updateLife(){
   lives -= 1;
