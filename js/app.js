@@ -8,13 +8,17 @@ var lifeSpan = document.getElementById('life');
 var statsDiv = document.getElementById('stats');
 var gameOverP = document.createElement('p');
 var hintsDiv = document.getElementById('hints');
+soundDir = 'sounds/';
 
 function updateScore(){
   score += 10;
-  if(score % 40 == 0){
-    level += 1;
-  }
+  updateLevel();
   scoreSpan.innerHTML = score;
+}
+function updateLevel(){
+  if(score % 40 == 0){
+    level += .5;
+  }
 }
 function updateLife(){
   lives -= 1;
